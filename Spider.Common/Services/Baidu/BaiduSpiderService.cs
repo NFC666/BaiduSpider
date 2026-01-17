@@ -1,16 +1,17 @@
 ﻿using System.Text;
 using Microsoft.Playwright;
 using Spider.Common.Models;
+using Spider.Common.Models.Baidu;
 
-namespace Spider.Common.Services;
+namespace Spider.Common.Services.Baidu;
 
 public class BaiduSpiderService
 {
     private IPlaywright _playwright;
     private IBrowser _browser;
     private IPage _page;
-    
-    private readonly FileService _fileService = new();
+
+    private readonly FileService _fileService = new("./Baidu");
 
     public async Task InitializeAsync()
     {
@@ -135,7 +136,7 @@ public class BaiduSpiderService
             }
 
             newsContents.Add(newsContent);
-            await _fileService.SaveAllContentToJson(newsContents);
+            await _fileService.SaveAllContentToJson(newsContents, SpiderSource.Baidu);
         }
 
         return newsContents;

@@ -30,7 +30,7 @@ public class PaperSpiderService : PlaywrightService
             pageNum,
             pageSize,
             searchType = 1,
-            orderType =3,
+            orderType = 3,
         };
         var json = JsonConvert.SerializeObject(requestBody);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -50,14 +50,16 @@ public class PaperSpiderService : PlaywrightService
                 , SpiderSource.ThePaperSearch);
             Console.WriteLine($"新闻信息已经保存在当前目录下的{Directory}内");
         }
-        return news;
 
+        return news;
     }
 
-    public async Task<List<News>> GetNewsByPageNumAsync(int pageNum, int pageSize = 20)
+    public async Task<List<News>> GetNewsByPageNumAsync(NewsType newsType
+        , int pageNum = 1
+        , int pageSize = 20)
     {
         var news = new List<News>();
-        var json = await GetNewsJsonAsync(pageNum, pageSize);
+        var json = await GetNewsJsonAsync(newsType, pageNum, pageSize);
         var newsCovers = JsonConverterHelper
             .FromJsonListToList<NewsCover>(json, "data.list");
 
@@ -76,16 +78,14 @@ public class PaperSpiderService : PlaywrightService
         return news;
     }
 
-    private async Task<string> GetNewsJsonAsync(int pageNum, int pageSize = 20)
+    private async Task<string> GetNewsJsonAsync(NewsType newsType
+        , int pageNum = 1
+        , int pageSize = 20)
     {
         var url = "contentapi/nodeCont/getByChannelId";
         var requestBody = new
         {
-            channelId = "25950",
-            excludeContIds = new long[]
-                { 32405966, 32406446, 32405967, 32406027, 32406021, 32406050, 32405953, 32405919, 32406429, 32407254 },
-            // listRecommendIds = new long[] { 32406454, 32406429, 32406050, 32405919 },
-            listRecommendIds = new long[] { 32406454, 32406429, 32406050, 32405919 },
+            channelId = (uint)newsType,
             pageNum,
             pageSize,
             province = (string?)null,

@@ -1,7 +1,7 @@
 ﻿
-# BaiduSpider
+# NewsSpider
 
-一个基于 **Microsoft Playwright（C#）** 的百度热搜新闻抓取工具，
+一个基于 **Microsoft Playwright（C#）** 的新闻抓取工具，
 使用 **系统 Edge 浏览器**，模拟真实用户行为，抓取热搜列表及相关新闻正文内容，并保存为 JSON 文件。
 
 ---

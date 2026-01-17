@@ -5,7 +5,7 @@ namespace BaiduSpider
 {
     class Program
     {
-        private static readonly PlaywrightService _playwrightService = new();
+        private static readonly BaiduSpiderService BaiduSpiderService = new();
         private static readonly FileService _fileService = new();
         
         static async Task Main(string[] args)
@@ -13,7 +13,7 @@ namespace BaiduSpider
             var newsItems = new List<HotWord>();
             try
             {
-                await _playwrightService.InitializeAsync();
+                await BaiduSpiderService.InitializeAsync();
             }
             catch (Exception ex)
             {
@@ -21,7 +21,7 @@ namespace BaiduSpider
                 return;
             }
             try{
-                await _playwrightService.GotoBaiduHomePage();
+                await BaiduSpiderService.GotoBaiduHomePage();
             }catch(Exception ex)
             {
                 Console.WriteLine("进入百度首页出错，详情："+ex.Message);
@@ -29,7 +29,7 @@ namespace BaiduSpider
             }
             try
             {
-                newsItems = await _playwrightService.GetNewsItems();
+                newsItems = await BaiduSpiderService.GetNewsItems();
                 foreach (var news in newsItems)
                 {
                     Console.WriteLine(news.Title);
@@ -42,7 +42,7 @@ namespace BaiduSpider
             }
             try
             {
-                var newsContents = await _playwrightService
+                var newsContents = await BaiduSpiderService
                     .GetNewsContent(newsItems);
 
                 await _fileService.SaveAllContentToJson(newsContents);

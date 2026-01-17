@@ -4,7 +4,7 @@ using Spider.Common.Models;
 
 namespace Spider.Common.Services;
 
-public class PlaywrightService
+public class BaiduSpiderService
 {
     private IPlaywright _playwright;
     private IBrowser _browser;

@@ -1,4 +1,6 @@
-﻿using BaiduSpider.Models;
+﻿using System.Text;
+using System.Text.Json;
+using BaiduSpider.Models;
 
 namespace BaiduSpider.Services;
 using Microsoft.Playwright;
@@ -28,9 +30,9 @@ public class PlaywrightService
         await _page.GotoAsync("https://www.baidu.com");
     }
     
-    public async Task<List<NewsItem>> GetNewsItems()
+    public async Task<List<HotWord>> GetNewsItems()
     {
-        var result = new List<NewsItem>();
+        var result = new List<HotWord>();
 
         // 选中所有 hotsearch-item
         var items = await 
@@ -53,7 +55,7 @@ public class PlaywrightService
 
             if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(url))
             {
-                result.Add(new NewsItem
+                result.Add(new HotWord
                 {
                     Title = title,
                     Url = url
@@ -64,11 +66,10 @@ public class PlaywrightService
         return result;
     }
 
-    public async Task<List<NewsContent>> GetNewsContent(List<NewsItem> newsItems)
+    public async Task<List<NewsContent>> GetNewsContent(List<HotWord> newsItems)
     {
         var newsContents = new List<NewsContent>();
-        // //newsContents截取，不要第一个元素
-        // newsItems = newsItems.Skip(1).ToList();
+
         
 
         foreach (var news in newsItems)
@@ -104,11 +105,10 @@ public class PlaywrightService
                 // 防反爬（很重要）
                 await _page.WaitForTimeoutAsync(800);
             }
-
-
-
+            
             foreach (var url in urls)
             {
+                var sb = new StringBuilder();
                 try
                 {
                     await _page.GotoAsync(url, new()
@@ -118,8 +118,15 @@ public class PlaywrightService
                     
                     await _page.Locator("body")
                         .WaitForAsync(new() { Timeout = 5000 });
-                    var text = await _page.EvaluateAsync<string>("() => document.body.innerText");
-                    newsContent.Content.Add(text);
+                    // var text = await _page.EvaluateAsync<string>("() => document.body.innerText");
+                    var textContent = await _page.Locator("p").AllTextContentsAsync();
+                    sb.Append(string.Join("\n", textContent));
+                    // newsContent.Content.Add(sb.ToString());
+                    newsContent.Content.Add(new NewsItem
+                    {
+                        Url = url,
+                        Content = sb.ToString()
+                    });
                 }
                 catch (Exception ex)
                 {

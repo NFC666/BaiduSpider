@@ -1,8 +1,7 @@
 ﻿namespace BaiduSpider.Models;
 
-public class NewsItem
+public class HotWord
 {
     public required string Url { get; set; }
-    
-    public required string Content { get; set; }
+    public required string Title { get; set; }
 }

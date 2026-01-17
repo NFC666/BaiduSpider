@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.RegularExpressions;
 using BaiduSpider.Models;
 
 namespace BaiduSpider.Services;
@@ -10,10 +9,16 @@ public class FileService
     {
         Directory.CreateDirectory("./Content");
     }
+
     public async Task SaveAllContentToJson(List<NewsContent> newsContents)
     {
-        var text = JsonSerializer.Serialize(newsContents);
-        text = Regex.Unescape(text);
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true, // 美观的格式
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
+        var text = JsonSerializer.Serialize(newsContents, options);
 
         var time = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         var path = Path.Combine(
@@ -27,11 +32,14 @@ public class FileService
         await File.WriteAllTextAsync(path, text);
     }
 
-    public async Task SaveNewsItem(List<NewsItem> newsItems)
+    public async Task SaveNewsItem(List<HotWord> newsItems)
     {
-        var text = JsonSerializer.Serialize(newsItems);
-        text = Regex.Unescape(text);
-        await File.WriteAllTextAsync("./newsItems.json"
-            , text);
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
+        var text = JsonSerializer.Serialize(newsItems, options);
+        await File.WriteAllTextAsync("./newsItems.json", text);
     }
 }

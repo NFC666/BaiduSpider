@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using BaiduSpider.Models;
+using Spider.Common.Models;
 
-namespace BaiduSpider.Services;
+namespace Spider.Common.Services;
 
 public class FileService
 {

@@ -1,5 +1,5 @@
-﻿using BaiduSpider.Models;
-using BaiduSpider.Services;
+﻿using Spider.Common.Models;
+using Spider.Common.Services;
 
 namespace BaiduSpider
 {

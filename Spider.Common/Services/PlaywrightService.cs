@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using System.Text.Json;
-using BaiduSpider.Models;
-
-namespace BaiduSpider.Services;
 using Microsoft.Playwright;
+using Spider.Common.Models;
+
+namespace Spider.Common.Services;
+
 public class PlaywrightService
 {
     private IPlaywright _playwright;
@@ -86,7 +86,7 @@ public class PlaywrightService
             });
 
             var titles = _page.Locator("div[class^='title-wrapper_']");
-            var count = Math.Min(await titles.CountAsync(), 10);
+            var count = Math.Min((int)await titles.CountAsync(), 10);
             string[] urls = new string[count];
             for (int i = 0; i < count; i++)
             {
@@ -120,7 +120,7 @@ public class PlaywrightService
                         .WaitForAsync(new() { Timeout = 5000 });
                     // var text = await _page.EvaluateAsync<string>("() => document.body.innerText");
                     var textContent = await _page.Locator("p").AllTextContentsAsync();
-                    sb.Append(string.Join("\n", textContent));
+                    sb.Append(string.Join((string?)"\n", (IEnumerable<string?>)textContent));
                     // newsContent.Content.Add(sb.ToString());
                     newsContent.Content.Add(new NewsItem
                     {

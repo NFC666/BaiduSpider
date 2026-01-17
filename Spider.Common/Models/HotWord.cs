@@ -1,4 +1,4 @@
-﻿namespace BaiduSpider.Models;
+﻿namespace Spider.Common.Models;
 
 public class HotWord
 {

@@ -37,8 +37,8 @@ public class MoeService : PlaywrightService
     {
         var news = new List<NewsCover>();
         var url = GetUrlFromType(newsType);
-        await _page.GotoAsync(Path.Combine(_baseUrl, url));
-        var ul = await _page.QuerySelectorAsync("ul[id='list']");
+        await Page.GotoAsync(Path.Combine(_baseUrl, url));
+        var ul = await Page.QuerySelectorAsync("ul[id='list']");
         if (ul == null)
         {
             return news;
@@ -81,8 +81,8 @@ public class MoeService : PlaywrightService
             return string.Empty;
         }
         var midUrl = GetUrlFromType(NewsType.工作动态);
-        await _page.GotoAsync(Path.Combine(_baseUrl, midUrl, newsCover.Link));
-        var content = await _page
+        await Page.GotoAsync(Path.Combine(_baseUrl, midUrl, newsCover.Link));
+        var content = await Page
             .QuerySelectorAsync("div[class='TRS_Editor']");
         if (content == null)
         {

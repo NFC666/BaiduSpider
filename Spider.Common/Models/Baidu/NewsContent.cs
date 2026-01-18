@@ -2,6 +2,7 @@
 
 public class NewsContent
 {
-    public required HotWord Item { get; set; }
-    public required List<NewsItem>? Content { get; set; }
+    public required string Url { get; set; }
+    
+    public required string Content { get; set; }
 }

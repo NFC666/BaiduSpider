@@ -110,10 +110,10 @@ public class PaperSpiderService : PlaywrightService
     private async Task<string> GetNewsContentAsync(NewsCover newsCover)
     {
         var url = newsCover.Link;
-        await _page.GotoAsync(url);
+        await Page.GotoAsync(url);
 
         // 模糊选择 class 名含 "cententWrap"
-        var contentDiv = await _page
+        var contentDiv = await Page
             .QuerySelectorAsync("div[class*='cententWrap']");
 
         if (contentDiv == null)

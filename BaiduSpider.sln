@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11408.102 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduSpider", "BaiduSpider\BaiduSpider.csproj", "{7EB9871F-A931-4B23-B8E3-7744288544B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spider.Common", "Spider.Common\Spider.Common.csproj", "{058E6CE6-6596-415A-B6D0-3B6ACD46AD61}"
@@ -10,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCnSpider", "WorkerCnS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoeSpider", "MoeSpider\MoeSpider.csproj", "{2022570C-DF98-4CA9-A418-05AF6B9568B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsSpider", "NewsSpider\NewsSpider.csproj", "{24441BE2-2F15-47E5-A067-B6CEC2A938ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsSpider", "NewsSpider\NewsSpider.csproj", "{2BC81A10-7E90-4C31-BD3C-1EE8804C2081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +41,12 @@ Global
 		{2022570C-DF98-4CA9-A418-05AF6B9568B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2022570C-DF98-4CA9-A418-05AF6B9568B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2022570C-DF98-4CA9-A418-05AF6B9568B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24441BE2-2F15-47E5-A067-B6CEC2A938ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24441BE2-2F15-47E5-A067-B6CEC2A938ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24441BE2-2F15-47E5-A067-B6CEC2A938ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24441BE2-2F15-47E5-A067-B6CEC2A938ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC81A10-7E90-4C31-BD3C-1EE8804C2081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC81A10-7E90-4C31-BD3C-1EE8804C2081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC81A10-7E90-4C31-BD3C-1EE8804C2081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC81A10-7E90-4C31-BD3C-1EE8804C2081}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

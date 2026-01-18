@@ -5,39 +5,24 @@ using Spider.Common.Models.Baidu;
 
 namespace Spider.Common.Services.Baidu;
 
-public class BaiduSpiderService
+public class BaiduSpiderService : PlaywrightService
 {
-    private IPlaywright _playwright;
-    private IBrowser _browser;
-    private IPage _page;
 
-    private readonly FileService _fileService = new("./Baidu");
-
-    public async Task InitializeAsync()
-    {
-        _playwright = await Playwright.CreateAsync();
-        string edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
-        _browser = await _playwright.Chromium.LaunchAsync(new()
-        {
-            Headless = false,
-            Timeout = 10000,
-            ExecutablePath = edgePath // 使用系统浏览器
-        });
-        _page = await _browser.NewPageAsync();
-    }
+    public string Directory { get; set; } = "./Baidu";
+    private readonly FileService _fileService = new("Directory");
 
     public async Task GotoBaiduHomePage()
     {
-        await _page.GotoAsync("https://www.baidu.com");
+        await Page.GotoAsync("https://www.baidu.com");
     }
     
-    public async Task<List<HotWord>> GetNewsItems()
+    public async Task<List<NewsCover>> GetNewsItems()
     {
-        var result = new List<HotWord>();
+        var result = new List<NewsCover>();
 
         // 选中所有 hotsearch-item
         var items = await 
-            _page.QuerySelectorAllAsync("li.hotsearch-item");
+            Page.QuerySelectorAllAsync("li.hotsearch-item");
 
         foreach (var item in items)
         {
@@ -56,7 +41,7 @@ public class BaiduSpiderService
 
             if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(url))
             {
-                result.Add(new HotWord
+                result.Add(new NewsCover
                 {
                     Title = title,
                     Url = url
@@ -67,26 +52,26 @@ public class BaiduSpiderService
         return result;
     }
 
-    public async Task<List<NewsContent>> GetNewsContent(List<HotWord> newsItems)
+    public async Task<List<News>> GetNewsContent(List<NewsCover> newsItems)
     {
-        var newsContents = new List<NewsContent>();
+        var newsContents = new List<News>();
 
         
 
         foreach (var news in newsItems)
         {
-            var newsContent = new NewsContent
+            var newsContent = new News
             {
                 Item = news,
-                Content = new()
+                Contents = new()
             };
 
-            await _page.GotoAsync(news.Url, new()
+            await Page.GotoAsync(news.Url, new()
             {
                 WaitUntil = WaitUntilState.NetworkIdle
             });
 
-            var titles = _page.Locator("div[class^='title-wrapper_']");
+            var titles = Page.Locator("div[class^='title-wrapper_']");
             var count = Math.Min((int)await titles.CountAsync(), 10);
             string[] urls = new string[count];
             for (int i = 0; i < count; i++)
@@ -104,7 +89,7 @@ public class BaiduSpiderService
                 urls[i] = href;
 
                 // 防反爬（很重要）
-                await _page.WaitForTimeoutAsync(800);
+                await Page.WaitForTimeoutAsync(800);
             }
             
             foreach (var url in urls)
@@ -112,18 +97,18 @@ public class BaiduSpiderService
                 var sb = new StringBuilder();
                 try
                 {
-                    await _page.GotoAsync(url, new()
+                    await Page.GotoAsync(url, new()
                     {
                         WaitUntil = WaitUntilState.NetworkIdle
                     });
                     
-                    await _page.Locator("body")
+                    await Page.Locator("body")
                         .WaitForAsync(new() { Timeout = 5000 });
                     // var text = await _page.EvaluateAsync<string>("() => document.body.innerText");
-                    var textContent = await _page.Locator("p").AllTextContentsAsync();
+                    var textContent = await Page.Locator("p").AllTextContentsAsync();
                     sb.Append(string.Join((string?)"\n", (IEnumerable<string?>)textContent));
                     // newsContent.Content.Add(sb.ToString());
-                    newsContent.Content.Add(new NewsItem
+                    newsContent.Contents.Add(new NewsContent
                     {
                         Url = url,
                         Content = sb.ToString()
@@ -142,4 +127,61 @@ public class BaiduSpiderService
         return newsContents;
     }
 
+
+    public async Task<List<NewsContent>> GetNewsContentByHotWordAsync(NewsCover hotWord)
+    {
+        var contents = new List<NewsContent>();
+        await Page.GotoAsync(hotWord.Url, new()
+        {
+            WaitUntil = WaitUntilState.NetworkIdle
+        });
+        var titles = Page.Locator("div[class^='title-wrapper_']");
+        var count = Math.Min((int)await titles.CountAsync(), 10);
+        string[] urls = new string[count];
+        for (int i = 0; i < count; i++)
+        {
+            var title = titles.Nth(i);
+
+            // await title.ScrollIntoViewIfNeededAsync();
+            // await title.ClickAsync();
+            var linkLocator = title.Locator("a").First;
+            var href = await linkLocator.GetAttributeAsync("href");
+            if (string.IsNullOrEmpty(href))
+            {
+                continue;
+            }
+            urls[i] = href;
+            // 防反爬（很重要）
+            await Page.WaitForTimeoutAsync(200);
+        }
+        foreach (var url in urls)
+        {
+            var sb = new StringBuilder();
+            try
+            {
+                await Page.GotoAsync(url, new()
+                {
+                    WaitUntil = WaitUntilState.NetworkIdle
+                });
+
+                await Page.Locator("body")
+                    .WaitForAsync(new() { Timeout = 5000 });
+                // var text = await _page.EvaluateAsync<string>("() => document.body.innerText");
+                var textContent = await Page.Locator("p").AllTextContentsAsync();
+                sb.Append(string.Join((string?)"\n", (IEnumerable<string?>)textContent));
+                // newsContent.Content.Add(sb.ToString());
+                contents.Add(new NewsContent
+                {
+                    Url = url,
+                    Content = sb.ToString()
+                });
+            }
+            catch (Exception ex)
+            {
+                continue;
+            }
+        }
+        return contents;
+
+    }
 }

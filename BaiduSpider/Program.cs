@@ -12,7 +12,7 @@ namespace BaiduSpider
         
         static async Task Main(string[] args)
         {
-            var newsItems = new List<HotWord>();
+            var newsItems = new List<NewsCover>();
             try
             {
                 await BaiduSpiderService.InitializeAsync();

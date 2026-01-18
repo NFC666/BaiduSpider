@@ -1,0 +1,223 @@
+﻿<Page
+    x:Class="NewsSpider.Views.Pages.BaiduSpiderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NewsSpider.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NewsSpider.ViewModels.Pages"
+    Title="百度新闻爬虫"
+    d:DataContext="{d:DesignInstance Type=vm:BaiduSpiderPageViewModel,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="650"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  顶部控制区域  -->
+        <Border
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Padding="0,0,0,10"
+            BorderBrush="#E0E0E0"
+            BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  保存目录设置  -->
+                <Grid
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    ColumnDefinitions="Auto,*">
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        VerticalAlignment="Center"
+                        Text="保存目录：" />
+                    <TextBox
+                        Grid.Column="1"
+                        Width="400"
+                        VerticalContentAlignment="Center"
+                        Text="{Binding SaveDirectory, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+
+                <!--  按钮区域  -->
+                <StackPanel
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Padding="15,8"
+                        Background="#4CAF50"
+                        BorderThickness="0"
+                        Command="{Binding StartSpiderCommand}"
+                        Content="开始爬取"
+                        Cursor="Hand"
+                        FontWeight="Bold"
+                        Foreground="White">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4" />
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  内容显示区域  -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  左侧热词列表  -->
+            <Border
+                Grid.Column="0"
+                Margin="0,0,10,0"
+                BorderBrush="#E0E0E0"
+                BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Padding="10"
+                        Background="#F5F5F5"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="热点新闻" />
+
+                    <ListBox
+                        x:Name="HotWordsListBox"
+                        Grid.Row="1"
+                        BorderThickness="0"
+                        ItemsSource="{Binding NewsContents}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        SelectedIndex="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Padding="10,8"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="0,0,0,1"
+                                    Cursor="Hand">
+                                    <TextBlock
+                                        FontSize="14"
+                                        Text="{Binding Item.Title}"
+                                        TextWrapping="Wrap" />
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!--  右侧新闻内容  -->
+            <Border Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--  当前选中的热词信息  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="0,0,0,10"
+                        Padding="15"
+                        Background="#F8F9FA"
+                        CornerRadius="4">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                Margin="0,0,0,5"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="{Binding ElementName=HotWordsListBox, Path=SelectedItem.Item.Title}" />
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Foreground="#0066CC"
+                                Text="{Binding ElementName=HotWordsListBox, Path=SelectedItem.Item.Url}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
+                    </Border>
+
+                    <!--  新闻列表  -->
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding ElementName=HotWordsListBox, Path=SelectedItem.Contents}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Margin="0,0,0,15"
+                                        Padding="15"
+                                        Background="White"
+                                        BorderBrush="#E0E0E0"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <!--  新闻链接  -->
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Margin="0,0,0,10"
+                                                Cursor="Hand"
+                                                Foreground="#0066CC"
+                                                Text="{Binding Url}"
+                                                TextTrimming="CharacterEllipsis">
+                                                <TextBlock.ToolTip>
+                                                    <ToolTip Content="{Binding Url}" />
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+
+                                            <!--  新闻内容  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Padding="10"
+                                                Background="#F8F9FA"
+                                                CornerRadius="3">
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Text="{Binding Content}"
+                                                    TextWrapping="Wrap" />
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

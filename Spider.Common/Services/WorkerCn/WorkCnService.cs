@@ -17,9 +17,9 @@ public class WorkCnService : PlaywrightService
     {
         var news = new List<News>();
         string url = GetUrlFromType(newsType);
-        await _page.GotoAsync(Path.Combine(baseUrl, url));
+        await Page.GotoAsync(Path.Combine(baseUrl, url));
         var selectors = await
-            _page.QuerySelectorAllAsync("li[id^='li_']");
+            Page.QuerySelectorAllAsync("li[id^='li_']");
         foreach (var selector in selectors)
         {
             try
@@ -88,9 +88,9 @@ public class WorkCnService : PlaywrightService
     private async Task<string> GetContentFromUrl(string url)
     {
         
-        await _page.GotoAsync(url);
+        await Page.GotoAsync(url);
         
-        var paragraphs = await _page
+        var paragraphs = await Page
             .QuerySelectorAsync("div[class='ccontent']");
         if (paragraphs == null)
         {

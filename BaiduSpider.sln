@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spider.Common", "Spider.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePaperSpider", "ThePaperSpider\ThePaperSpider.csproj", "{B8694536-BFAC-496C-977D-49F370EBB62F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCnSpider", "WorkerCnSpider\WorkerCnSpider.csproj", "{35606D29-C68E-44FD-8FA9-196466CBFD30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B8694536-BFAC-496C-977D-49F370EBB62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8694536-BFAC-496C-977D-49F370EBB62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8694536-BFAC-496C-977D-49F370EBB62F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35606D29-C68E-44FD-8FA9-196466CBFD30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35606D29-C68E-44FD-8FA9-196466CBFD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35606D29-C68E-44FD-8FA9-196466CBFD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35606D29-C68E-44FD-8FA9-196466CBFD30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

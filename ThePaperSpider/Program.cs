@@ -13,15 +13,33 @@ public class ThePaperSpider
         await _paperSpiderService.InitializeAsync();
         while (true)
         {
+
             var choice = ConsoleShowMenu();
             if (choice == "1")
             {
                 Console.Write("请输入关键词：");
                 var word = Console.ReadLine();
+                Console.Write("请输入页码：");
+                string input = Console.ReadLine();
+                bool success = int.TryParse(input, out int page);
+                if (!success)
+                {
+                    Console.WriteLine("输入页码错误，请重新输入");
+                    continue;
+                }
+                Console.Write("请输入每页数量：");
+                string inputPageSize = Console.ReadLine();
+                bool successPageSize = int.TryParse(inputPageSize, out int pageSize);
+                if (!successPageSize)
+                {
+                    Console.WriteLine("输入每页数量错误，请重新输入");
+                    continue;
+                }
+
                 if(word == null)
                     continue;
                 var res = await _paperSpiderService
-                    .GetNewsByKeyWordsAsync(word);
+                    .GetNewsByKeyWordsAsync(word, page, pageSize);
                 
             
             }
@@ -30,8 +48,24 @@ public class ThePaperSpider
 
                 Console.WriteLine("请选择栏目：");
                 var newsType = ConsoleShowSelectColumn();
-                
-                var res = await _paperSpiderService.GetNewsByPageNumAsync(newsType);
+                Console.Write("请输入页码：");
+                string input = Console.ReadLine();
+                bool success = int.TryParse(input, out int page);
+                if (!success)
+                {
+                    Console.WriteLine("输入页码错误，请重新输入");
+                    continue;
+                }
+                Console.Write("请输入每页数量：");
+                string inputPageSize = Console.ReadLine();
+                bool successPageSize = int.TryParse(inputPageSize, out int pageSize);
+                if (!successPageSize)
+                {
+                    Console.WriteLine("输入每页数量错误，请重新输入");
+                    continue;
+                }
+                var res = await _paperSpiderService
+                    .GetNewsByPageNumAsync(newsType, page, pageSize);
                 foreach (var r in res)
                 {
                     Console.WriteLine(r.NewsContent);

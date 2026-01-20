@@ -2,6 +2,8 @@
 using Microsoft.Playwright;
 using Spider.Common.Models;
 using Spider.Common.Models.Baidu;
+using News = Spider.Common.Models.Baidu.News;
+using NewsCover = Spider.Common.Models.Baidu.NewsCover;
 
 namespace Spider.Common.Services.Baidu;
 

@@ -7,11 +7,12 @@ public abstract class PlaywrightService
 {
     private IPlaywright _playwright;
     public IBrowser Browser;
+    public IBrowserContext Context;
     public IPage Page;
-    
 
+    public virtual string StorageStatePath => "./StorageState.json";
 
-    public async Task InitializeAsync()
+    public async Task<bool> InitializeAsync(bool useStorageState = false)
     {
         _playwright = await Playwright.CreateAsync();
         string edgePath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
@@ -21,9 +22,19 @@ public abstract class PlaywrightService
             Timeout = 10000,
             ExecutablePath = edgePath // 使用系统浏览器
         });
-        Page = await Browser.NewPageAsync();
+
+        var contextOptions = new BrowserNewContextOptions();
+
+        if (useStorageState && File.Exists(StorageStatePath))
+        {
+            contextOptions.StorageStatePath = StorageStatePath;
+        }
+
+        Context = await Browser.NewContextAsync(contextOptions);
+        Page = await Context.NewPageAsync();
+        return useStorageState;
     }
-    
+
     
 
 

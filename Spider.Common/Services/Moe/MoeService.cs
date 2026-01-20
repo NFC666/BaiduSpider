@@ -1,5 +1,7 @@
 ﻿using Spider.Common.Models;
 using Spider.Common.Models.Moe;
+using News = Spider.Common.Models.Moe.News;
+using NewsCover = Spider.Common.Models.Moe.NewsCover;
 
 namespace Spider.Common.Services.Moe;
 

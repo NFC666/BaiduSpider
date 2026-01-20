@@ -4,6 +4,8 @@ using Spider.Common.Helpers;
 using Spider.Common.Models;
 using Spider.Common.Models.ThePaper;
 using Spider.Common.Services.Baidu;
+using News = Spider.Common.Models.ThePaper.News;
+using NewsCover = Spider.Common.Models.ThePaper.NewsCover;
 
 namespace Spider.Common.Services.ThePaper;
 
